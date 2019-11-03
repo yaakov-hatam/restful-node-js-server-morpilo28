@@ -17,7 +17,7 @@ function phoneList(phones) {
             <td>${phones[i].age}</td>
             <td>${phoneCarrier}</td>
             <td>${phones[i].id}</td>
-            <td>${phones[i].imageUrl}</td>
+            <td><img src="http://angular.github.io/angular-phonecat/step-14/app/${phones[i].imageUrl}"/></td>
             <td>${phones[i].name}</td>
             <td>${phones[i].snippet}</td>
         </tr>`
