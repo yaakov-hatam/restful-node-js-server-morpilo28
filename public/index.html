@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <form novalidate>
+        <label>id: <input name="id" placeholder="id"></label>
+        <label>name: <input name="name" placeholder="name"></label>
+        <label>km: <input name="km" placeholder="km"></label>
+        <button id='add'>Add</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Runner id</th>
+                <th>Runner name</th>
+                <th>Runner km</th>
+            </tr>
+        </thead>
+        <tbody id='runners'>
+
+        </tbody>
+    </table>
+    <script>
+        const runnerEndpoint = '/runner';
+        document.getElementById('add').addEventListener('click', function (e) {
+            e.preventDefault();
+            const runner = {
+                id: this.form.id.value,
+                name: this.form.name.value,
+                km: this.form.km.value
+            };
+
+            fetch(runnerEndpoint, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
+                body: JSON.stringify(runner)
+            }).then(responseData => {
+                console.log(responseData);
+
+
+            }).catch(err => {
+                alert('not inserted')
+            });
+        })
+
+        fetch(runnerEndpoint).then(runnerData => {
+            runnerData.json().then(runnerTableView);
+        })
+
+        function runnerTableView(runners) {
+            let html = '';
+            for (let i = 0; i < runners.length; i++) {
+                html += `<tr>
+                    <td>${runners[i].id}</td>
+                    <td>${runners[i].name}</td>
+                    <td>${runners[i].km}</td>
+                </tr>`
+            }
+            document.getElementById('runners').innerHTML = html;
+
+        }
+    </scrpt> -->
+    <h1>Mobile Phones</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>age </th>
+                <th>carrier</th>
+                <th>id </th>
+                <th>imageUrl </th>
+                <th>name </th>
+                <th>snippet </th>
+            </tr>
+        </thead>
+        <tbody id="phones"></tbody>
+    </table>
+    <!-- <button name="showAll"> Show List</button> -->
+</body>
+<script src='index.js'></script>
+</html>
