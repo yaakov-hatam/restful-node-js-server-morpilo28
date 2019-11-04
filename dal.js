@@ -1,6 +1,6 @@
 const fs = require('fs');
-const fileName = 'c:\\worksapce\\restful-node-js-server-morpilo28\\phones\\phones.json';
-/* C:\worksapce\restful-node-js-server-morpilo28\phones\phones.json */
+const fileName = 'C:\\Workspace - git\\restful-node-js-server-morpilo28\\phones\\phones.json';
+/*C:\Workspace - git\restful-node-js-server-morpilo28\phones\phones.json */
 
 function readOne(id, callback) {
 
@@ -9,7 +9,6 @@ function readOne(id, callback) {
 function readAll(callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        
         if (e) {
             callback(e);
         } else {
@@ -18,18 +17,17 @@ function readAll(callback) {
     })
 }
 
-function saveOne(addedRunner, callback) {
+function saveOne(phone, callback) {
     fs.readFile(fileName, (e, d) => {
-        const runnersArray = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        runnersArray.push(addedRunner);
-        fs.writeFile(fileName, JSON.stringify(runnersArray), (e) => {
+        const phonesArray = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        phonesArray.push(phone);
+        fs.writeFile(fileName, JSON.stringify(phonesArray), (e) => {
             if (e) {
                 callback('error');
             }
             else {
                 callback(null);
             }
-
         });
     });
 }
@@ -38,13 +36,13 @@ function updateOne(runnerToUpdate, callback) {
 
 }
 
-function deleteOne(runnerToDelete, callback) {
+function deleteOne(phone, callback) {
     fs.readFile(fileName, (e, d) => {
-        let allRunners = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        let allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
 
-        allRunners = allRunners.filter(r => r.id !== runnerToDelete);
+        allPhones = allPhones.filter(r => r.id !== phone);
 
-        fs.writeFile(fileName, JSON.stringify(allRunners), (e) => {
+        fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
             if (e) {
                 callback(e);
             } else {

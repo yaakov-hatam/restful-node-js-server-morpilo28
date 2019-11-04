@@ -1,12 +1,12 @@
 const dal = require('./dal');
 
-function phone(id, callback) {
+function getPhone(id, callback) {
     callback(null, { "id": id, "name": "abc", "km": 42 });
-    
+
     dal.readAll(id, function (runnerData) {
 
     })
-    
+
 }
 
 function getPhones(callback) {
@@ -19,26 +19,22 @@ function getPhones(callback) {
     })
 }
 
-function createRunner(addedRunner, callback) {
-    if (typeof addedRunner.id !== 'number') {
-        callback('Runner id should be string');
-    } else {
-        dal.saveOne(addedRunner, (e) => {
-            if (e) {
-                callback(e);
-            } else {
-                callback(null);
-            }
-        })
-    }
+function createPhone(phone, callback) {
+    dal.saveOne(phone, (e) => {
+        if (e) {
+            callback(e);
+        } else {
+            callback(null);
+        }
+    })
 }
 
 function updateRunner(runner) {
 
 }
 
-function deleteRunner(runnerToDelete, callback) {
-    dal.deleteOne(runnerToDelete, (e) => {
+function deletePhone(phone, callback) {
+    dal.deleteOne(phone, (e) => {
         if (e) {
             callback(e);
         } else {
@@ -66,11 +62,9 @@ function filterRunnersList(selectedFiltersValues, callback) {
         }
     })
 }
-module.exports.updateRunner = function () {
 
-}
-module.exports.getRunner = phone;
+module.exports.getPhone = getPhone;
 module.exports.getPhones = getPhones;
-module.exports.createRunner = createRunner;
+module.exports.createPhone = createPhone;
 module.exports.filterRunnersList = filterRunnersList;
-module.exports.deleteRunner = deleteRunner;
+module.exports.deletePhone = deletePhone;
