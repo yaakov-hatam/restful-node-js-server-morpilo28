@@ -2,8 +2,16 @@ const fs = require('fs');
 const fileName = 'C:\\Workspace - git\\restful-node-js-server-morpilo28\\phones\\phones.json';
 /*C:\Workspace - git\restful-node-js-server-morpilo28\phones\phones.json */
 
-function readOne(id, callback) {
-
+function readOne(age, callback) {
+    fs.readFile(fileName, (e, d) => {
+        const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        const onePhone = allPhones.find((phone) => phone.age === age);
+        if (e) {
+            callback(e);
+        } else {
+            callback(null, onePhone);
+        }
+    })
 }
 
 function readAll(callback) {
@@ -32,14 +40,33 @@ function saveOne(phone, callback) {
     });
 }
 
-function updateOne(runnerToUpdate, callback) {
+function updateOne(phone, callback) {
+    fs.readFile(fileName, (e, d) => {
+        const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        allPhones.map((phoneElement)=>{
+            if(phoneElement.age === phone.age){
+                phoneElement.id = phone.id;
+                phoneElement.carrier = phone.carrier;
+                phoneElement.imageUrl = phone.imageUrl;
+                phoneElement.name = phone.name;
+                phoneElement.snippet = phone.snippet;
+            }
+        })
 
+        fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
+            if (e) {
+                callback('error');
+            }
+            else {
+                callback(null, allPhones);
+            }
+        });
+    });
 }
 
 function deleteOne(phone, callback) {
     fs.readFile(fileName, (e, d) => {
         let allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-
         allPhones = allPhones.filter(r => r.id !== phone);
 
         fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
@@ -52,7 +79,9 @@ function deleteOne(phone, callback) {
     });
 }
 
+module.exports.readOne = readOne;
 module.exports.readAll = readAll;
 module.exports.saveOne = saveOne;
 module.exports.deleteOne = deleteOne;
+module.exports.updateOne = updateOne;
 

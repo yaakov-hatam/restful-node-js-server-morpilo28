@@ -23,7 +23,8 @@ app.get('/phone', (req, res) => {
 //one phone (retrieve an index of resources or an individual resource)
 app.get('/phone/:age', (req, res) => {
     console.log('one phone');
-    phonesBl.getPhone(req.param.age, function (e, data) {
+    const age = req.param.age;
+    phonesBl.getPhone(age, function (e, data) {
         if (e) {
             return res.status(500).send();
         } else {
@@ -47,11 +48,12 @@ const phone = req.body;
 //create or replace a resource
 app.put('/phone/:age', (req, res) => {
     console.log('put');
-    runnerBl.updateRunner(req.body, function (e, data) {
+    const phone = req.body;
+    phonesBl.updatePhone(phone, function (e, data) {
         if (e) {
             return res.status(500).send();
         } else {
-            return res.status(200).send();
+            return res.send(data);
         }
     })
 

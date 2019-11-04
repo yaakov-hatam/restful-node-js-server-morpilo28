@@ -22,6 +22,11 @@ document.getElementById('add').addEventListener('click', function (e) {
     });
 })
 
+document.getElementById('search').addEventListener('click', (e)=>{
+    e.preventDefault();
+    console.log('deaddddddddddddddddd');
+})
+
 fetch(phonesEndpoint).then(phoneData => {
     phoneData.json().then(phoneList);
 })

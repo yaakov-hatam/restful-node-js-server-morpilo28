@@ -1,10 +1,14 @@
 const dal = require('./dal');
 
-function getPhone(id, callback) {
-    callback(null, { "id": id, "name": "abc", "km": 42 });
+function getPhone(age, callback) {
+    /* callback(null, { "id": age, "name": "abc", "km": 42 }); */
 
-    dal.readAll(id, function (runnerData) {
-
+    dal.readOne(age, (phonAge) => {
+        if (e) {
+            callback(e);
+        } else {
+            callback(null, onePhone);
+        }
     })
 
 }
@@ -29,8 +33,14 @@ function createPhone(phone, callback) {
     })
 }
 
-function updateRunner(runner) {
-
+function updatePhone(phone, callback) {
+    dal.updateOne(phone, (e, allPhones) => {
+        if (e) {
+            callback(e);
+        } else {
+            callback(null, allPhones);
+        }
+    })
 }
 
 function deletePhone(phone, callback) {
@@ -43,28 +53,8 @@ function deletePhone(phone, callback) {
     })
 }
 
-function filterRunnersList(selectedFiltersValues, callback) {
-    dal.readAll((e, allRunners) => {
-        let newArr = [];
-        for (let i = 0; i < allRunners.length; i++) {
-            if (allRunners[i].id == selectedFiltersValues.id) {
-                newArr.push(allRunners[i]);
-            } else if (allRunners[i].name == selectedFiltersValues.name) {
-                newArr.push(allRunners[i]);
-            } else if (allRunners[i].km == selectedFiltersValues.km) {
-                newArr.push(allRunners[i]);
-            }
-        }
-        if (e) {
-            callback(e);
-        } else {
-            callback(null, newArr);
-        }
-    })
-}
-
 module.exports.getPhone = getPhone;
 module.exports.getPhones = getPhones;
 module.exports.createPhone = createPhone;
-module.exports.filterRunnersList = filterRunnersList;
 module.exports.deletePhone = deletePhone;
+module.exports.updatePhone = updatePhone;
