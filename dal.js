@@ -1,8 +1,7 @@
 const fs = require('fs');
 
 const fileName = './phones/phones.json';
-/*C:\Workspace - git\restful-node-js-server-morpilo28\phones\phones.json */
-/* 'C:\\worksapce\\restful-node-js-server-morpilo28\\phones\\phones.json';df */
+
 function readOne(age, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
