@@ -71,6 +71,6 @@ app.delete('/phone/:age', (req, res) => {
     })
 });
 
-app.listen(proccess.env.PORT || PORT, () =>
-    console.log(`Example app listening on port ${proccess.env.PORT || PORT}!`),
+app.listen(process.env.PORT || PORT, () =>
+    console.log(`Example app listening on port ${process.env.PORT || PORT}!`),
 );
