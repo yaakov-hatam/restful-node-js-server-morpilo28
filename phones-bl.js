@@ -3,7 +3,7 @@ const dal = require('./dal');
 function getPhone(age, callback) {
     /* callback(null, { "id": age, "name": "abc", "km": 42 }); */
 
-    dal.readOne(age, (phonAge) => {
+    dal.readOne(age, (e, onePhone) => {
         if (e) {
             callback(e);
         } else {

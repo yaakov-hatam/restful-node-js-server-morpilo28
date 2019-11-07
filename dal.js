@@ -5,7 +5,8 @@ const fileName = './phones/phones.json';
 function readOne(age, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        const onePhone = allPhones.find((phone) => phone.age === age);
+        const onePhone = allPhones.find((phone) => phone.age == age);
+        console.log(onePhone);
         if (e) {
             callback(e);
         } else {
@@ -85,3 +86,8 @@ module.exports.saveOne = saveOne;
 module.exports.deleteOne = deleteOne;
 module.exports.updateOne = updateOne;
 
+
+/* 
+const b = [{a:1}, {a:2},{a:3},{a:4}];
+age = 3;
+const ageFound = b.find((element) => element.a === age); */
