@@ -62,20 +62,20 @@ function eventListenersOnButtons(phones) {
             name: this.form.name.value,
             snippet: this.form.snippet.value,
         };
-    
+
         fetch(phonesEndpoint, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
             body: JSON.stringify(phone)
         }).then(responseData => {
-    
+
             this.form.age.value = '';
             this.form.carrier.value = '';
             this.form.id.value = '';
             this.form.imageUrl.value = '';
             this.form.name.value = '';
             this.form.snippet.value = '';
-    
+
             listView();
         }).catch(err => {
             alert('not inserted')
@@ -83,8 +83,9 @@ function eventListenersOnButtons(phones) {
     })
 
     for (let i = 0; i < phones.length; i++) {
+        const phoneAge = phones[i].age;
         const singlePhoneEndpoint = `/phone/${phones[i].age}`;
-        
+
         //on details
         document.getElementById(`details${phones[i].age}`).addEventListener('click', function (e) {
             e.preventDefault();
@@ -92,12 +93,11 @@ function eventListenersOnButtons(phones) {
                 phoneData.json().then(onDetails);
             });
         });
-        const phoneAge = phones[i].age;
-        
+
         //on delete
         document.getElementById(`delete${phoneAge}`).addEventListener('click', function (e) {
             e.preventDefault();
-            let phoneAge = {age: this.id.slice(6)};
+            let phoneAge = { age: this.id.slice(6) };
             fetch(phonesEndpoint, {
                 method: "DELETE",
                 headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
@@ -112,16 +112,8 @@ function eventListenersOnButtons(phones) {
         //on update
         document.getElementById(`update${phoneAge}`).addEventListener('click', function (e) {
             e.preventDefault();
-            let phoneAge = {age: this.id.slice(6)};
-            fetch(phonesEndpoint, {
-                method: "PUT",
-                headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
-                body: JSON.stringify(phoneAge)
-            }).then(responseData => {
-                responseData.json().then(onUpdate);
-            }).catch(err => {
-                console.log('err' + err);
-                alert('not inserted')
+            fetch(singlePhoneEndpoint).then(phoneData => {
+                phoneData.json().then(onUpdate);
             });
         });
     }
@@ -157,23 +149,21 @@ function onDetails(phone) {
     })
 }
 
-function onUpdate(phone){
+function onUpdate(phone) {
     let html = ''
     html += `
-    <form>
-        <input name='age' placeholder='${phone[0].age}'>
+        <input name='age' placeholder='${phone.age}'>
         <br>
-        <input name='carrier' placeholder='${phone[0].carrier}'>
+        <input name='carrier' placeholder='${phone.carrier}'>
         <br>
-        <input name='id' placeholder='${phone[0].id}'>
+        <input name='id' placeholder='${phone.id}'>
         <br>
-        <input name='name' placeholder='${phone[0].name}'>
+        <input name='name' placeholder='${phone.name}'>
         <br>
-        <input name='snippet' placeholder='${phone[0].snippet}'>
+        <input name='snippet' placeholder='${phone.snippet}'>
         <br>
         <button id='saveChanges'> Save Changes </button>
-        <button id='returnToFullList'> Return To Full List </button>
-    </form>`
+        <button id='returnToFullList'> Return To Full List </button>`
     document.getElementById('main').innerHTML = html;
     document.getElementById('returnToFullList').addEventListener('click', (e) => {
         e.preventDefault();
@@ -181,8 +171,7 @@ function onUpdate(phone){
     })
     document.getElementById('saveChanges').addEventListener('click', (e) => {
         e.preventDefault();
-      /*   console.log(this.form.age.value);
-        debugger;
+     /*    console.log(this);
         const phone = {
             age: this.form.age.value,
             carrier: this.form.carrier.value,
@@ -191,9 +180,9 @@ function onUpdate(phone){
             name: this.form.name.value,
             snippet: this.form.snippet.value,
         };
-        debugger;
+
         fetch(phonesEndpoint, {
-            method: "POST",
+            method: "PUT",
             headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
             body: JSON.stringify(phone)
         }).then(responseData => {
