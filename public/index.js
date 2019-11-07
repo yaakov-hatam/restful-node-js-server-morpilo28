@@ -1,3 +1,4 @@
+//details dont work
 const phonesEndpoint = '/phone';
 
 listView();
