@@ -78,6 +78,7 @@ function eventListenersOnButtons(phones) {
         //on show more details
         document.getElementById(phones[i].age).addEventListener('click', function (e) {
             e.preventDefault();
+            debugger;
             fetch(singlePhoneEndpoint).then(phoneData => {
                 phoneData.json().then(onDetails);
             });
@@ -100,26 +101,26 @@ function eventListenersOnButtons(phones) {
     }
 }
 
-function onDetails(phoneAge) {
-    if (!phoneAge.carrier) {
-        phoneAge.carrier = '';
+function onDetails(phone) {
+    if (!phone.carrier) {
+        phone.carrier = '';
     } else {
-        phoneAge.carrier = phoneAge.carrier;
+        phone.carrier = phone.carrier;
     }
     let html = ''
     html += `
     <div>
-        <img width='50' src="http://angular.github.io/angular-phonecat/step-14/app/${phoneAge.imageUrl}"/>
+        <img width='50' src="http://angular.github.io/angular-phonecat/step-14/app/${phone.imageUrl}"/>
         <br>
-        AGE: ${phoneAge.age}
+        AGE: ${phone.age}
         <br>
-        CARRIER: ${phoneAge.carrier}
+        CARRIER: ${phone.carrier}
         <br>
-        ID: ${phoneAge.id}
+        ID: ${phone.id}
         <br>
-        NAME: ${phoneAge.name}
+        NAME: ${phone.name}
         <br>
-        SNIPPET: ${phoneAge.snippet}
+        SNIPPET: ${phone.snippet}
         <br>
         <form>
             <button id='returnToFullList'> Return To Full List </button>
