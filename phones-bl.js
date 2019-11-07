@@ -33,18 +33,18 @@ function createPhone(phone, callback) {
     })
 }
 
-function updatePhone(phone, callback) {
-    dal.updateOne(phone, (e, allPhones) => {
+function updatePhone(phoneAge, callback) {
+    dal.updateOne(phoneAge, (e, singlePhone) => {
         if (e) {
             callback(e);
         } else {
-            callback(null, allPhones);
+            callback(null, singlePhone);
         }
     })
 }
 
-function deletePhone(phone, callback) {
-    dal.deleteOne(phone, (e) => {
+function deletePhone(phoneAge, callback) {
+    dal.deleteOne(phoneAge, (e) => {
         if (e) {
             callback(e);
         } else {

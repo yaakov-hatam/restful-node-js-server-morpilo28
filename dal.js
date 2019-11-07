@@ -6,7 +6,6 @@ function readOne(age, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         const onePhone = allPhones.find((phone) => phone.age == age);
-        console.log(onePhone);
         if (e) {
             callback(e);
         } else {
@@ -41,18 +40,24 @@ function saveOne(phone, callback) {
     });
 }
 
-function updateOne(phone, callback) {
+function updateOne(phoneAge, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        allPhones.map((phoneElement)=>{
-            if(phoneElement.age === phone.age){
-                phoneElement.id = phone.id;
-                phoneElement.carrier = phone.carrier;
-                phoneElement.imageUrl = phone.imageUrl;
-                phoneElement.name = phone.name;
-                phoneElement.snippet = phone.snippet;
+        const singlePhone = allPhones.filter(phone => phone.age == phoneAge);
+        if(e){
+            callback(e);
+        }else{
+            callback(null, singlePhone);
+        }
+        /* allPhones.map((phoneElement) => {
+            if (phoneElement.age === phoneAge.age) {
+                phoneElement.id = phoneAge.id;
+                phoneElement.carrier = phoneAge.carrier;
+                phoneElement.imageUrl = phoneAge.imageUrl;
+                phoneElement.name = phoneAge.name;
+                phoneElement.snippet = phoneAge.snippet;
             }
-        })
+        }) 
 
         fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
             if (e) {
@@ -61,15 +66,14 @@ function updateOne(phone, callback) {
             else {
                 callback(null, allPhones);
             }
-        });
+        });*/
     });
 }
 
-function deleteOne(phone, callback) {
+function deleteOne(phoneAge, callback) {
     fs.readFile(fileName, (e, d) => {
         let allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        allPhones = allPhones.filter(r => r.id !== phone);
-
+        allPhones = allPhones.filter(phone => phone.age !== phoneAge);
         fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
             if (e) {
                 callback(e);
@@ -87,7 +91,7 @@ module.exports.deleteOne = deleteOne;
 module.exports.updateOne = updateOne;
 
 
-/* 
+/*
 const b = [{a:1}, {a:2},{a:3},{a:4}];
 age = 3;
 const ageFound = b.find((element) => element.a === age); */
