@@ -33,17 +33,30 @@ function createPhone(phone, callback) {
     })
 }
 
-function updatePhone(phoneAge, callback) {
-    dal.updateOne(phoneAge, (e, singlePhone) => {
+function updatePhone(singlePhone, callback) {
+    if(!singlePhone.carrier){
+        singlePhone.carrier = '';
+    }
+    if(!singlePhone.imageUrl){
+        singlePhone.imageUrl = '';
+    }
+    if(!singlePhone.name){
+        singlePhone.name = '';
+    }
+    if(!singlePhone.snippet){
+        singlePhone.snippet = '';
+    }
+    dal.updateOne(singlePhone, (e) => {
         if (e) {
             callback(e);
         } else {
-            callback(null, singlePhone);
+            callback(null);
         }
     })
 }
 
 function deletePhone(phoneAge, callback) {
+    phoneAge = phoneAge.toString();
     dal.deleteOne(phoneAge, (e) => {
         if (e) {
             callback(e);

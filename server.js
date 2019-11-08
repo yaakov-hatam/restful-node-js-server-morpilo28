@@ -48,15 +48,14 @@ app.post('/phone', (req, res) => {
 //update a phone
 app.put('/phone', (req, res) => {
     console.log('put');
-    const phoneAge = req.body.age;
-    phonesBl.updatePhone(phoneAge, function (e, data) {
+    const singlePhone = req.body;
+    phonesBl.updatePhone(singlePhone, function (e) {
         if (e) {
             return res.status(500).send();
         } else {
-            return res.send(data);
+            return res.send();
         }
     })
-
 });
 
 //remove a phone

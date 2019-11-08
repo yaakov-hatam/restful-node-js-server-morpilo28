@@ -40,40 +40,34 @@ function saveOne(phone, callback) {
     });
 }
 
-function updateOne(phoneAge, callback) {
+function updateOne(singlePhone, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        const singlePhone = allPhones.filter(phone => phone.age == phoneAge);
-        if(e){
-            callback(e);
-        }else{
-            callback(null, singlePhone);
-        }
-        /* allPhones.map((phoneElement) => {
-            if (phoneElement.age === phoneAge.age) {
-                phoneElement.id = phoneAge.id;
-                phoneElement.carrier = phoneAge.carrier;
-                phoneElement.imageUrl = phoneAge.imageUrl;
-                phoneElement.name = phoneAge.name;
-                phoneElement.snippet = phoneAge.snippet;
+        allPhones.map((phone) => {
+            if (phone.age.toString() == singlePhone.age.toString()) {
+                phone.carrier = singlePhone.carrier;
+                phone.id = singlePhone.id;
+                phone.imageUrl = singlePhone.imageUrl;
+                phone.name = singlePhone.name;
+                phone.snippet =singlePhone.snippet;
             }
-        }) 
+        })
 
         fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
             if (e) {
                 callback('error');
             }
             else {
-                callback(null, allPhones);
+                callback(null);
             }
-        });*/
+        });
     });
 }
 
 function deleteOne(phoneAge, callback) {
     fs.readFile(fileName, (e, d) => {
         let allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        allPhones = allPhones.filter(phone => phone.age !== phoneAge);
+        allPhones = allPhones.filter(phone => phone.age.toString() !== phoneAge.toString());
         fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
             if (e) {
                 callback(e);
