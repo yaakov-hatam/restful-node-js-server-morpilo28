@@ -1,11 +1,11 @@
 const fs = require('fs');
-const fileName = 'C:\\Workspace - git\\restful-node-js-server-morpilo28\\phones\\phones.json';
-/*C:\Workspace - git\restful-node-js-server-morpilo28\phones\phones.json */
+
+const fileName = './phones/phones.json';
 
 function readOne(age, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        const onePhone = allPhones.find((phone) => phone.age === age);
+        const onePhone = allPhones.find((phone) => phone.age == age);
         if (e) {
             callback(e);
         } else {
@@ -40,16 +40,16 @@ function saveOne(phone, callback) {
     });
 }
 
-function updateOne(phone, callback) {
+function updateOne(singlePhone, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        allPhones.map((phoneElement)=>{
-            if(phoneElement.age === phone.age){
-                phoneElement.id = phone.id;
-                phoneElement.carrier = phone.carrier;
-                phoneElement.imageUrl = phone.imageUrl;
-                phoneElement.name = phone.name;
-                phoneElement.snippet = phone.snippet;
+        allPhones.map((phone) => {
+            if (phone.age.toString() == singlePhone.age.toString()) {
+                phone.carrier = singlePhone.carrier;
+                phone.id = singlePhone.id;
+                phone.imageUrl = singlePhone.imageUrl;
+                phone.name = singlePhone.name;
+                phone.snippet =singlePhone.snippet;
             }
         })
 
@@ -58,17 +58,16 @@ function updateOne(phone, callback) {
                 callback('error');
             }
             else {
-                callback(null, allPhones);
+                callback(null);
             }
         });
     });
 }
 
-function deleteOne(phone, callback) {
+function deleteOne(phoneAge, callback) {
     fs.readFile(fileName, (e, d) => {
         let allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        allPhones = allPhones.filter(r => r.id !== phone);
-
+        allPhones = allPhones.filter(phone => phone.age.toString() !== phoneAge.toString());
         fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
             if (e) {
                 callback(e);
@@ -85,3 +84,8 @@ module.exports.saveOne = saveOne;
 module.exports.deleteOne = deleteOne;
 module.exports.updateOne = updateOne;
 
+
+/*
+const b = [{a:1}, {a:2},{a:3},{a:4}];
+age = 3;
+const ageFound = b.find((element) => element.a === age); */

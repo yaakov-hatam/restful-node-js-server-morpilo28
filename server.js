@@ -8,7 +8,7 @@ const phonesBl = require('./phones-bl');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-//full list (retrieve an index of resources or an individual resource)
+//full list
 app.get('/phone', (req, res) => {
     console.log('all phones');
     phonesBl.getPhones(function (e, data) {
@@ -20,10 +20,10 @@ app.get('/phone', (req, res) => {
     })
 });
 
-//one phone (retrieve an index of resources or an individual resource)
+//one phone - full details
 app.get('/phone/:age', (req, res) => {
     console.log('one phone');
-    const age = req.param.age;
+    const age = req.params.age;
     phonesBl.getPhone(age, function (e, data) {
         if (e) {
             return res.status(500).send();
@@ -33,9 +33,9 @@ app.get('/phone/:age', (req, res) => {
     })
 });
 
-//add phone (create a resource or generally provide data)
+//add a phone
 app.post('/phone', (req, res) => {
-const phone = req.body;
+    const phone = req.body;
     phonesBl.createPhone(phone, function (e, data) {
         if (e) {
             return res.status(500).send();
@@ -45,24 +45,25 @@ const phone = req.body;
     })
 });
 
-//create or replace a resource
-app.put('/phone/:age', (req, res) => {
+//update a phone
+app.put('/phone', (req, res) => {
     console.log('put');
-    const phone = req.body;
-    phonesBl.updatePhone(phone, function (e, data) {
+    const singlePhone = req.body;
+    phonesBl.updatePhone(singlePhone, function (e) {
         if (e) {
             return res.status(500).send();
         } else {
-            return res.send(data);
+            return res.send();
         }
     })
-
 });
 
-//remove a resource
-app.delete('/phone/:age', (req, res) => {
+//remove a phone
+app.delete('/phone', (req, res) => {
     console.log('delete');
-    phonesBl.deletePhone(req.params.id, function (e, data) {
+    const phoneAge = req.body.age;
+
+    phonesBl.deletePhone(phoneAge, function (e, data) {
         if (e) {
             return res.status(500).send();
         } else {
@@ -71,6 +72,6 @@ app.delete('/phone/:age', (req, res) => {
     })
 });
 
-app.listen(proccess.env.PORT || PORT, () =>
-    console.log(`Example app listening on port ${proccess.env.PORT || PORT}!`),
+app.listen(process.env.PORT || PORT, () =>
+    console.log(`Example app listening on port ${process.env.PORT || PORT}!`),
 );
