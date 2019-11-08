@@ -2,18 +2,6 @@ const fs = require('fs');
 
 const fileName = './phones/phones.json';
 
-function readOne(age, callback) {
-    fs.readFile(fileName, (e, d) => {
-        const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        const onePhone = allPhones.find((phone) => phone.age == age);
-        if (e) {
-            callback(e);
-        } else {
-            callback(null, onePhone);
-        }
-    })
-}
-
 function readAll(callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
@@ -25,11 +13,23 @@ function readAll(callback) {
     })
 }
 
-function saveOne(phone, callback) {
+function readOne(phoneAge, callback) {
     fs.readFile(fileName, (e, d) => {
-        const phonesArray = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        phonesArray.push(phone);
-        fs.writeFile(fileName, JSON.stringify(phonesArray), (e) => {
+        const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        const singlePhone = allPhones.find((phone) => phone.age == phoneAge);
+        if (e) {
+            callback(e);
+        } else {
+            callback(null, singlePhone);
+        }
+    })
+}
+
+function saveOne(phoneToAdd, callback) {
+    fs.readFile(fileName, (e, d) => {
+        const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        allPhones.push(phoneToAdd);
+        fs.writeFile(fileName, JSON.stringify(allPhones), (e) => {
             if (e) {
                 callback('error');
             }

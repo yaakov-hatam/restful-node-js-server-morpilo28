@@ -1,18 +1,5 @@
 const dal = require('./dal');
 
-function getPhone(age, callback) {
-    /* callback(null, { "id": age, "name": "abc", "km": 42 }); */
-
-    dal.readOne(age, (e, onePhone) => {
-        if (e) {
-            callback(e);
-        } else {
-            callback(null, onePhone);
-        }
-    })
-
-}
-
 function getPhones(callback) {
     dal.readAll((e, allPhones) => {
         if (e) {
@@ -23,8 +10,24 @@ function getPhones(callback) {
     })
 }
 
-function createPhone(phone, callback) {
-    dal.saveOne(phone, (e) => {
+function getPhone(phoneAge, callback) {
+    dal.readOne(phoneAge, (e, singlePhone) => {
+        if (e) {
+            callback(e);
+        } else {
+            if (!singlePhone.carrier) {
+                singlePhone.carrier = '';
+            } else {
+                singlePhone.carrier = singlePhone.carrier;
+            }
+            callback(null, singlePhone);
+        }
+    })
+
+}
+
+function createPhone(phoneToAdd, callback) {
+    dal.saveOne(phoneToAdd, (e) => {
         if (e) {
             callback(e);
         } else {
@@ -34,18 +37,6 @@ function createPhone(phone, callback) {
 }
 
 function updatePhone(singlePhone, callback) {
-    if(!singlePhone.carrier){
-        singlePhone.carrier = '';
-    }
-    if(!singlePhone.imageUrl){
-        singlePhone.imageUrl = '';
-    }
-    if(!singlePhone.name){
-        singlePhone.name = '';
-    }
-    if(!singlePhone.snippet){
-        singlePhone.snippet = '';
-    }
     dal.updateOne(singlePhone, (e) => {
         if (e) {
             callback(e);
@@ -56,7 +47,6 @@ function updatePhone(singlePhone, callback) {
 }
 
 function deletePhone(phoneAge, callback) {
-    phoneAge = phoneAge.toString();
     dal.deleteOne(phoneAge, (e) => {
         if (e) {
             callback(e);
