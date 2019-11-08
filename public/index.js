@@ -94,17 +94,17 @@ function onDetails(phone) {
     html += `
     <div>
         <img width='50' src="http://angular.github.io/angular-phonecat/step-14/app/${phone.imageUrl}"/>
-        <br>
-        AGE: <b>${phone.age}</b>
-        <br>
-        CARRIER: <b>${phone.carrier}</b>
-        <br>
-        ID: <b>${phone.id}</b>
-        <br>
-        NAME: <b>${phone.name}</b>
-        <br>
-        SNIPPET: <b>${phone.snippet}</b>
-        <br>
+        <br><br>
+        <u>AGE:</u><br> ${phone.age}
+        <br><br>
+        <u>CARRIER: </u><br>${phone.carrier}
+        <br><br>
+        <u>ID: </u><br> ${phone.id}
+        <br><br>
+        <u>NAME: </u><br> ${phone.name}
+        <br><br>
+        <u>SNIPPET: </u><br>${phone.snippet}
+        <br><br>
         <button id='returnToFullList'> Return To Full List </button>
     </div>`
     printToHtml(html);
