@@ -10,46 +10,31 @@ app.use(bodyParser.json());
 
 //full list
 app.get('/phone', (req, res) => {
-    console.log('all phones');
-    phonesBl.getPhones(function (e, data) {
+    phonesBl.getPhones((e, allPhones) => {
         if (e) {
             return res.status(500).send();
         } else {
-            return res.send(data);
+            return res.send(allPhones);
         }
     })
 });
 
 //one phone - full details
 app.get('/phone/:age', (req, res) => {
-    console.log('one phone');
-    const age = req.params.age;
-    phonesBl.getPhone(age, function (e, data) {
+    const phoneAge = req.params.age;
+    phonesBl.getPhone(phoneAge, (e, singlePhone) => {
         if (e) {
             return res.status(500).send();
         } else {
-            return res.send(data);
+            return res.send(singlePhone);
         }
     })
 });
 
 //add a phone
 app.post('/phone', (req, res) => {
-    const phone = req.body;
-    phonesBl.createPhone(phone, function (e, data) {
-        if (e) {
-            return res.status(500).send();
-        } else {
-            return res.send(data);
-        }
-    })
-});
-
-//update a phone
-app.put('/phone', (req, res) => {
-    console.log('put');
-    const singlePhone = req.body;
-    phonesBl.updatePhone(singlePhone, function (e) {
+    const phoneToAdd = req.body;
+    phonesBl.createPhone(phoneToAdd, (e) => {
         if (e) {
             return res.status(500).send();
         } else {
@@ -58,16 +43,26 @@ app.put('/phone', (req, res) => {
     })
 });
 
-//remove a phone
-app.delete('/phone', (req, res) => {
-    console.log('delete');
-    const phoneAge = req.body.age;
-
-    phonesBl.deletePhone(phoneAge, function (e, data) {
+//update a phone
+app.put('/phone', (req, res) => {
+    const singlePhone = req.body;
+    phonesBl.updatePhone(singlePhone, (e) => {
         if (e) {
             return res.status(500).send();
         } else {
-            return res.send(data);
+            return res.send();
+        }
+    })
+});
+
+//delete a phone
+app.delete('/phone', (req, res) => {
+    const phoneAge = req.body.age;
+    phonesBl.deletePhone(phoneAge, (e) => {
+        if (e) {
+            return res.status(500).send();
+        } else {
+            return res.send();
         }
     })
 });

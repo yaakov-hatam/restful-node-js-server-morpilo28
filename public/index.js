@@ -1,14 +1,8 @@
 const phonesEndpoint = '/phone';
 
-listView();
+a(phonesEndpoint, onShowPhoneList);
 
-function listView() {
-    fetch(phonesEndpoint).then(phoneData => {
-        phoneData.json().then(onPhoneList);
-    })
-}
-
-function onPhoneList(phones) {
+function onShowPhoneList(allPhones) {
     let html = ` 
     <form novalidate method="post" action="/phone">
         <input name="age" placeholder="AGE" />
@@ -29,15 +23,15 @@ function onPhoneList(phones) {
             </tr>
         </thead>
         <tbody>`;
-    for (let i = 0; i < phones.length; i++) {
+    for (let i = 0; i < allPhones.length; i++) {
         html += `
                 <tr>
-                    <td>${phones[i].name}</td>
-                    <td><img width='50' src="http://angular.github.io/angular-phonecat/step-14/app/${phones[i].imageUrl}"/></td>
+                    <td>${allPhones[i].name}</td>
+                    <td><img width='50' src="http://angular.github.io/angular-phonecat/step-14/app/${allPhones[i].imageUrl}"/></td>
                     <td>
-                        <button id='delete${phones[i].age}'>Delete</button>
-                        <button id='update${phones[i].age}'>Update</button>
-                        <button id='details${phones[i].age}'>Show More Details</button>
+                        <button id='delete${allPhones[i].age}'>Delete</button>
+                        <button id='update${allPhones[i].age}'>Update</button>
+                        <button id='details${allPhones[i].age}'>Show More Details</button>
                     </td>   
                 </tr>`
     }
@@ -45,139 +39,103 @@ function onPhoneList(phones) {
             </tbody>
         </table>`
 
-    document.getElementById('main').innerHTML = html;
+    printToHtml(html);
 
-    eventListenersOnButtons(phones);
+    eventListenersOnButtons(allPhones);
 }
 
-function eventListenersOnButtons(phones) {
+function eventListenersOnButtons(allPhones) {
     //on add
     document.getElementById('add').addEventListener('click', function (e) {
         e.preventDefault();
-        const thisAddForm = this;
-        onAdd(thisAddForm);
+        const thisOfAddForm = this;
+        onAdd(thisOfAddForm);
     })
 
-    for (let i = 0; i < phones.length; i++) {
-        const phoneAge = phones[i].age;
-        const singlePhoneEndpoint = `/phone/${phones[i].age}`;
+    for (let i = 0; i < allPhones.length; i++) {
+        const phoneAge = allPhones[i].age;
+        const singlePhoneEndpoint = `/phone/${phoneAge}`;
 
         //on details
-        document.getElementById(`details${phones[i].age}`).addEventListener('click', function (e) {
+        document.getElementById(`details${phoneAge}`).addEventListener('click', function (e) {
             e.preventDefault();
-            fetch(singlePhoneEndpoint).then(phoneData => {
-                phoneData.json().then(onDetails);
-            });
+            a(singlePhoneEndpoint, onDetails);
         });
 
         //on delete
         document.getElementById(`delete${phoneAge}`).addEventListener('click', function (e) {
             e.preventDefault();
             let phoneAge = { age: this.id.slice(6) };
-            onDelete(phoneAge, phonesEndpoint);
+            b(phonesEndpoint, "DELETE", phoneAge);
         });
 
         //on update
         document.getElementById(`update${phoneAge}`).addEventListener('click', function (e) {
             e.preventDefault();
-            fetch(singlePhoneEndpoint).then(phoneData => {
-                phoneData.json().then(onUpdate);
-            });
+            a(singlePhoneEndpoint, onUpdate);
         });
     }
 }
 
-function onAdd(thisAddForm) {
-    const phone = {
-        age: thisAddForm.form.age.value,
-        carrier: thisAddForm.form.carrier.value,
-        id: thisAddForm.form.id.value,
-        imageUrl: thisAddForm.form.imageUrl.value,
-        name: thisAddForm.form.name.value,
-        snippet: thisAddForm.form.snippet.value,
+function onAdd(thisOfAddForm) {
+    const phoneToAdd = {
+        age: thisOfAddForm.form.age.value,
+        carrier: thisOfAddForm.form.carrier.value,
+        id: thisOfAddForm.form.id.value,
+        imageUrl: thisOfAddForm.form.imageUrl.value,
+        name: thisOfAddForm.form.name.value,
+        snippet: thisOfAddForm.form.snippet.value,
     };
-    fetch(phonesEndpoint, {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(phone)
-    }).then(responseData => {
-        thisAddForm.form.age.value = '';
-        thisAddForm.form.carrier.value = '';
-        thisAddForm.form.id.value = '';
-        thisAddForm.form.imageUrl.value = '';
-        thisAddForm.form.name.value = '';
-        thisAddForm.form.snippet.value = '';
-        listView();
-    }).catch(err => {
-        alert('not inserted');
-    });
-}
-
-function onDelete(phoneAge) {
-    fetch(phonesEndpoint, {
-        method: "DELETE",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(phoneAge)
-    }).then(responseData => {
-        listView();
-    }).catch(err => {
-        alert('not inserted');
-    });
+    b(phonesEndpoint, "POST", phoneToAdd);
 }
 
 function onDetails(phone) {
-    if (!phone.carrier) {
-        phone.carrier = '';
-    } else {
-        phone.carrier = phone.carrier;
-    }
     let html = ''
     html += `
     <div>
         <img width='50' src="http://angular.github.io/angular-phonecat/step-14/app/${phone.imageUrl}"/>
-        <br>
-        AGE: ${phone.age}
-        <br>
-        CARRIER: ${phone.carrier}
-        <br>
-        ID: ${phone.id}
-        <br>
-        NAME: ${phone.name}
-        <br>
-        SNIPPET: ${phone.snippet}
-        <br>
+        <br><br>
+        <u>AGE:</u><br> ${phone.age}
+        <br><br>
+        <u>CARRIER: </u><br>${phone.carrier}
+        <br><br>
+        <u>ID: </u><br> ${phone.id}
+        <br><br>
+        <u>NAME: </u><br> ${phone.name}
+        <br><br>
+        <u>SNIPPET: </u><br>${phone.snippet}
+        <br><br>
         <button id='returnToFullList'> Return To Full List </button>
     </div>`
-    document.getElementById('main').innerHTML = html;
+    printToHtml(html);
     document.getElementById('returnToFullList').addEventListener('click', (e) => {
         e.preventDefault();
-        listView();
+        a(phonesEndpoint, onShowPhoneList);
     })
 }
 
-function onUpdate(phone) {
+function onUpdate(phoneOldDetails) {
     let html = ''
     html += `
-            <input id='age' hidden value='${phone.age}'/>
+            <input id='age' hidden value='${phoneOldDetails.age}'/>
             <br>
-            <label>CARRIER: <input id='carrier' placeholder='${phone.carrier}' value='${phone.carrier}'/></label>
+            <label class='updateLabel'>CARRIER: <input class='updateInput' id='carrier' value='${phoneOldDetails.carrier}'/></label>
             <br>
-            <label>ID: <input id='id' placeholder='${phone.id}' value='${phone.id}'/></label>
+            <label class='updateLabel'>ID: <input class='updateInput' id='id' value='${phoneOldDetails.id}'/></label>
             <br>
-            <label>iMAGE URL: <input id='imageUrl' placeholder='${phone.imageUrl}' value='${phone.imageUrl}'/></label>
+            <label class='updateLabel'>iMAGE URL: <input class='updateInput' id='imageUrl' value='${phoneOldDetails.imageUrl}'/></label>
             <br>
-            <label>NAME: <input id='name' placeholder='${phone.name}' value='${phone.name}'/></label>
+            <label class='updateLabel'>NAME: <input class='updateInput' id='name' value='${phoneOldDetails.name}'/></label>
             <br>
-            <label>SNIPPET: <input id='snippet' placeholder='${phone.snippet}' value='${phone.snippet}'/></label>
+            <label class='updateLabel'>SNIPPET: <input class='updateInput' id='snippet' value='${phoneOldDetails.snippet}'/></label>
             <br>
             <button id='saveChanges'> Save Changes </button>
             <button id='returnToFullList'> Return To Full List </button>`
 
-    document.getElementById('main').innerHTML = html;
+    printToHtml(html);
     document.getElementById('saveChanges').addEventListener('click', (e) => {
         e.preventDefault();
-        console.log(this);
-        const phone = {
+        const phoneNewDetails = {
             age: document.getElementById("age").value,
             carrier: document.getElementById("carrier").value,
             id: document.getElementById("id").value,
@@ -185,20 +143,32 @@ function onUpdate(phone) {
             name: document.getElementById("name").value,
             snippet: document.getElementById("snippet").value
         };
-        console.log(phone);
-
-        fetch(phonesEndpoint, {
-            method: "PUT",
-            headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
-            body: JSON.stringify(phone)
-        }).then(responseData => {
-            listView();
-        }).catch(err => {
-            alert('not inserted')
-        });
+        b(phonesEndpoint, "PUT", phoneNewDetails);
     })
     document.getElementById('returnToFullList').addEventListener('click', (e) => {
         e.preventDefault();
-        listView();
+        a(phonesEndpoint, onShowPhoneList);
     })
+}
+
+function a(endPoint, whenResponse) {
+    fetch(endPoint).then(phoneData => {
+        phoneData.json().then(whenResponse);
+    })
+}
+
+function b(endPoint, httpVerb, bodyElement) {
+    fetch(endPoint, {
+        method: httpVerb,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyElement)
+    }).then(responseData => {
+        a(phonesEndpoint, onShowPhoneList);
+    }).catch(err => {
+        alert('not inserted');
+    });
+}
+
+function printToHtml(html) {
+    document.getElementById('main').innerHTML = html;
 }
