@@ -1,7 +1,5 @@
 const fs = require('fs');
 
-let fileName = './token.json';
-
 function readAll(callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
@@ -25,16 +23,16 @@ function readOne(phoneAge, callback) {
     })
 }
 
-function saveOne(objToAdd, callback) {
+function saveOne(userToAdd, callback) {
     fs.readFile(fileName, (e, d) => {
-        const all = d && d.length > 0 ? JSON.parse(d.toString()) : [];
-        all.push(objToAdd);
-        fs.writeFile(fileName, JSON.stringify(all), (e) => {
+        const allUsers = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        allUsers.push(userToAdd);
+        fs.writeFile(fileName, JSON.stringify(allUsers), (e) => {
             if (e) {
                 callback('error');
             }
             else {
-                callback(null, objToAdd);
+                callback(null);
             }
         });
     });
@@ -49,7 +47,7 @@ function updateOne(singlePhone, callback) {
                 phone.id = singlePhone.id;
                 phone.imageUrl = singlePhone.imageUrl;
                 phone.name = singlePhone.name;
-                phone.snippet =singlePhone.snippet;
+                phone.snippet = singlePhone.snippet;
             }
         })
 
@@ -78,8 +76,7 @@ function deleteOne(phoneAge, callback) {
     });
 }
 
-module.exports=(fileName) => {
-   fileName = fileName;
+const moudleDal = (fileName) => {
     return {
         readOne: readOne,
         readAll: readAll,
@@ -88,3 +85,5 @@ module.exports=(fileName) => {
         updateOne: updateOne
     }
 };
+module.exports.moudleDal;
+

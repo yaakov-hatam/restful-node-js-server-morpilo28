@@ -1,4 +1,4 @@
-const dal = require('./dal');
+const dal = require('./dal')('C:\\worksapce\\restful-node-js-server-morpilo28\\token.json');
 
 function getPhones(callback) {
     dal.readAll((e, allPhones) => {
@@ -26,12 +26,12 @@ function getPhone(phoneAge, callback) {
 
 }
 
-function createPhone(phoneToAdd, callback) {
-    dal.saveOne(phoneToAdd, (e) => {
+function createUser(userToAdd, callback) {
+    dal.saveOne(userToAdd, (e) => {
         if (e) {
             callback(e);
         } else {
-            callback(null);
+            callback(null, userToAdd);
         }
     })
 }
@@ -58,6 +58,6 @@ function deletePhone(phoneAge, callback) {
 
 module.exports.getPhone = getPhone;
 module.exports.getUserName = getPhones;
-module.exports.createPhone = createPhone;
+module.exports.createUser = createUser;
 module.exports.deletePhone = deletePhone;
 module.exports.updatePhone = updatePhone;

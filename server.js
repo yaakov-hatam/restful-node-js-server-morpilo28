@@ -4,13 +4,15 @@ const path = require('path');
 const app = express();
 const PORT = 3201;
 const phonesBl = require('./phones-bl');
+const tokenBl = require('./token-bl');
+const uuidv4 = require('uuid/v4');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 //full list
 app.get('/phone', (req, res) => {
-    phonesBl.getPhones((e, allPhones) => {
+    phonesBl.getUserName((e, allPhones) => {
         if (e) {
             return res.status(500).send();
         } else {
@@ -63,6 +65,25 @@ app.delete('/phone', (req, res) => {
             return res.status(500).send();
         } else {
             return res.send();
+        }
+    })
+});
+
+//post user name
+app.post('/token', (req, res) => {
+    /* const userName = req.body.name;
+    let token = uuidv4(); */
+
+    const userToAdd = {
+        name: req.body.name,
+        token: uuidv4()
+    }
+
+    tokenBl.createUser(userToAdd, (e) => {
+        if (e) {
+            return res.status(500).send();
+        } else {
+            return res.send(userToAdd);
         }
     })
 });
