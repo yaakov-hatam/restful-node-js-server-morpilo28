@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let fileName = './token.json';
+let fileName = '';
 
 function readAll(callback) {
     fs.readFile(fileName, (e, d) => {
