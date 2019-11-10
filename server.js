@@ -69,7 +69,7 @@ app.delete('/phone', (req, res) => {
     })
 });
 
-//post user name
+//post user name and token
 app.post('/token', (req, res) => {
     /* const userName = req.body.name;
     let token = uuidv4(); */

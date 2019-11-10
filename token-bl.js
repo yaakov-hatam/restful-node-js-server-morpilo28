@@ -1,4 +1,4 @@
-const dal = require('./dal')('C:\\worksapce\\restful-node-js-server-morpilo28\\token.json');
+const dal = require('./dal')('./token.json');
 
 function getPhones(callback) {
     dal.readAll((e, allPhones) => {
