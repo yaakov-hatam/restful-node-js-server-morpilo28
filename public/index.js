@@ -157,11 +157,11 @@ function a(endPoint, whenResponse) {
     })
 }
 
-function b(endPoint, httpVerb, bodyElement) {
+function b(endPoint, httpVerb, reqBody) {
     fetch(endPoint, {
         method: httpVerb,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bodyElement)
+        body: JSON.stringify(reqBody)
     }).then(responseData => {
         a(phonesEndpoint, onShowPhoneList);
     }).catch(err => {
