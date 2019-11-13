@@ -20,6 +20,7 @@
   "homepage": "https://github.com/yaakov-hatam/restful-node-js-server-morpilo28#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "uuid": "^3.3.3"
   }
 }
