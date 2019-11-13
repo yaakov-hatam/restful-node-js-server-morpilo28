@@ -1,6 +1,7 @@
 const tokenEndPoint = '/token';
 
 document.getElementById('send').addEventListener('click', () => {
+    //add token
     fetch(tokenEndPoint, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },

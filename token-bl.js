@@ -1,7 +1,6 @@
 const dal = require('./dal')();
 const fileName = './token.json';
 
-
 function getPhones(callback) {
     dal.readAll(fileName, (e, allPhones) => {
         if (e) {
@@ -58,9 +57,9 @@ function deletePhone(phoneAge, callback) {
     })
 }
 
-function setCount(token) {
-
-}
+/* function setCount(token) {
+        return tokenCount++;
+} */
 
 module.exports = () => {
     return {
@@ -69,5 +68,6 @@ module.exports = () => {
         createUser: createUser,
         deletePhone: deletePhone,
         updatePhone: updatePhone,
+        setCount: setCount
     }
 }

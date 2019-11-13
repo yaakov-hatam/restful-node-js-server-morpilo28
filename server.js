@@ -10,13 +10,15 @@ const uuidv4 = require('uuid/v4');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-app.use((req, res, next)=> {
-    // if client requested for new token, skip
-    const q = req.query;
+/* app.use((req, res, next)=> {
+    // if client requested for new token (api.html), skip
+    const token = req.query;
+     
     // fetch token from query - check if exist in our file db
     // set counter++ on the token object
+    tokenBl.setCount(token);
     next();
-});
+}); */
 
 //full list
 app.get('/phone', (req, res) => {
@@ -82,7 +84,7 @@ app.post('/token', (req, res) => {
     const userToAdd = {
         name: req.body.name,
         token: uuidv4(),
-        count: 0
+        tokenCount: 0
     }
 
     tokenBl.createUser(userToAdd, (e) => {
