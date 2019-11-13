@@ -3,12 +3,20 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 const PORT = 3201;
-const phonesBl = require('./phones-bl');
-const tokenBl = require('./token-bl');
+const phonesBl = require('./phones-bl')();
+const tokenBl = require('./token-bl')();
 const uuidv4 = require('uuid/v4');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
+
+app.use((req, res, next)=> {
+    // if client requested for new token, skip
+    const q = req.query;
+    // fetch token from query - check if exist in our file db
+    // set counter++ on the token object
+    next();
+});
 
 //full list
 app.get('/phone', (req, res) => {
@@ -71,12 +79,10 @@ app.delete('/phone', (req, res) => {
 
 //post user name and token
 app.post('/token', (req, res) => {
-    /* const userName = req.body.name;
-    let token = uuidv4(); */
-
     const userToAdd = {
         name: req.body.name,
-        token: uuidv4()
+        token: uuidv4(),
+        count: 0
     }
 
     tokenBl.createUser(userToAdd, (e) => {

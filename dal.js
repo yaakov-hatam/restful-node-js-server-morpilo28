@@ -1,8 +1,6 @@
 const fs = require('fs');
 
-let fileName = '';
-
-function readAll(callback) {
+function readAll(fileName, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         if (e) {
@@ -13,7 +11,7 @@ function readAll(callback) {
     })
 }
 
-function readOne(phoneAge, callback) {
+function readOne(phoneAge, fileName, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         const singlePhone = allPhones.find((phone) => phone.age == phoneAge);
@@ -25,7 +23,7 @@ function readOne(phoneAge, callback) {
     })
 }
 
-function saveOne(objToAdd, callback) {
+function saveOne(objToAdd, fileName, callback) {
     fs.readFile(fileName, (e, d) => {
         const all = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         all.push(objToAdd);
@@ -40,7 +38,7 @@ function saveOne(objToAdd, callback) {
     });
 }
 
-function updateOne(singlePhone, callback) {
+function updateOne(singlePhone, fileName, callback) {
     fs.readFile(fileName, (e, d) => {
         const allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         allPhones.map((phone) => {
@@ -64,7 +62,7 @@ function updateOne(singlePhone, callback) {
     });
 }
 
-function deleteOne(phoneAge, callback) {
+function deleteOne(phoneAge,fileName, callback) {
     fs.readFile(fileName, (e, d) => {
         let allPhones = d && d.length > 0 ? JSON.parse(d.toString()) : [];
         allPhones = allPhones.filter(phone => phone.age.toString() !== phoneAge.toString());
@@ -78,8 +76,7 @@ function deleteOne(phoneAge, callback) {
     });
 }
 
-module.exports=(fileName) => {
-   fileName = fileName;
+module.exports=() => {
     return {
         readOne: readOne,
         readAll: readAll,

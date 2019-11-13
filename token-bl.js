@@ -1,7 +1,9 @@
-const dal = require('./dal')('./token.json');
+const dal = require('./dal')();
+const fileName = './token.json';
+
 
 function getPhones(callback) {
-    dal.readAll((e, allPhones) => {
+    dal.readAll(fileName, (e, allPhones) => {
         if (e) {
             callback(e);
         } else {
@@ -11,7 +13,7 @@ function getPhones(callback) {
 }
 
 function getPhone(phoneAge, callback) {
-    dal.readOne(phoneAge, (e, singlePhone) => {
+    dal.readOne(phoneAge, fileName, (e, singlePhone) => {
         if (e) {
             callback(e);
         } else {
@@ -27,7 +29,7 @@ function getPhone(phoneAge, callback) {
 }
 
 function createUser(userToAdd, callback) {
-    dal.saveOne(userToAdd, (e) => {
+    dal.saveOne(userToAdd, fileName, (e) => {
         if (e) {
             callback(e);
         } else {
@@ -37,7 +39,7 @@ function createUser(userToAdd, callback) {
 }
 
 function updatePhone(singlePhone, callback) {
-    dal.updateOne(singlePhone, (e) => {
+    dal.updateOne(singlePhone, fileName, (e) => {
         if (e) {
             callback(e);
         } else {
@@ -47,7 +49,7 @@ function updatePhone(singlePhone, callback) {
 }
 
 function deletePhone(phoneAge, callback) {
-    dal.deleteOne(phoneAge, (e) => {
+    dal.deleteOne(phoneAge, fileName, (e) => {
         if (e) {
             callback(e);
         } else {
@@ -56,8 +58,16 @@ function deletePhone(phoneAge, callback) {
     })
 }
 
-module.exports.getPhone = getPhone;
-module.exports.getUserName = getPhones;
-module.exports.createUser = createUser;
-module.exports.deletePhone = deletePhone;
-module.exports.updatePhone = updatePhone;
+function setCount(token) {
+
+}
+
+module.exports = () => {
+    return {
+        getPhone: getPhone,
+        getUserName: getPhones,
+        createUser: createUser,
+        deletePhone: deletePhone,
+        updatePhone: updatePhone,
+    }
+}

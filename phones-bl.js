@@ -1,7 +1,8 @@
-const dal = require('./dal')('./phones/phones.json');
+const dal = require('./dal')();
+const fileName = './phones/phones.json';
 
 function getPhones(callback) {
-    dal.readAll((e, allPhones) => {
+    dal.readAll(fileName, (e, allPhones) => {
         if (e) {
             callback(e);
         } else {
@@ -11,7 +12,7 @@ function getPhones(callback) {
 }
 
 function getPhone(phoneAge, callback) {
-    dal.readOne(phoneAge, (e, singlePhone) => {
+    dal.readOne(phoneAge, fileName, (e, singlePhone) => {
         if (e) {
             callback(e);
         } else {
@@ -27,7 +28,7 @@ function getPhone(phoneAge, callback) {
 }
 
 function createPhone(phoneToAdd, callback) {
-    dal.saveOne(phoneToAdd, (e) => {
+    dal.saveOne(phoneToAdd, fileName, (e) => {
         if (e) {
             callback(e);
         } else {
@@ -37,7 +38,7 @@ function createPhone(phoneToAdd, callback) {
 }
 
 function updatePhone(singlePhone, callback) {
-    dal.updateOne(singlePhone, (e) => {
+    dal.updateOne(singlePhone, fileName, (e) => {
         if (e) {
             callback(e);
         } else {
@@ -47,7 +48,7 @@ function updatePhone(singlePhone, callback) {
 }
 
 function deletePhone(phoneAge, callback) {
-    dal.deleteOne(phoneAge, (e) => {
+    dal.deleteOne(phoneAge, fileName, (e) => {
         if (e) {
             callback(e);
         } else {
@@ -56,8 +57,12 @@ function deletePhone(phoneAge, callback) {
     })
 }
 
-module.exports.getPhone = getPhone;
-module.exports.getUserName = getPhones;
-module.exports.createPhone = createPhone;
-module.exports.deletePhone = deletePhone;
-module.exports.updatePhone = updatePhone;
+module.exports = () => {
+    return {
+        getPhone: getPhone,
+        getUserName: getPhones,
+        createPhone: createPhone,
+        deletePhone: deletePhone,
+        updatePhone: updatePhone,
+    }
+}
